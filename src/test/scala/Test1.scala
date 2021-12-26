@@ -26,23 +26,23 @@ class Test1:
     statusCheck && bodyCheck
   }
 
-  var httpApp: HttpRoutes[IO] = Router()
+//  var httpApp: HttpRoutes[IO] = Router()
 
-  @Before
-  def setup(): Unit =
+//  @Before
+  def httpApp(): HttpRoutes[IO] =
     val services = SimpleHttpRoutes.helloWorldRoutes[IO]
                <+> SimpleHttpRoutes.tweetRoutes[IO]
-    httpApp = Router("/" ->  services)
+    Router("/" ->  services)
 
   @Test def helloWorld(): Unit =
-    val request = httpApp.run(Request(method = Method.GET, uri = uri"/hello/other-person" ))
+    val request = httpApp().run(Request(method = Method.GET, uri = uri"/hello/other-person" ))
     assertTrue(check(request.getOrElse(Response(NotFound)), Status.Ok, Some("{\"message\":\"Hello, other-person\"}")))
 
   @Test def specificTweet(): Unit =
-    val request = httpApp.run(Request(method = Method.GET, uri = uri"/tweets/1234" ))
+    val request = httpApp().run(Request(method = Method.GET, uri = uri"/tweets/1234" ))
     assertTrue(check(request.getOrElse(Response(NotFound)), Status.Ok, Some("{\"tweet\":\"1234\"}")))
 
   @Test def popularTweets(): Unit =
     val expectedTweets = "[{\"tweet\":\"10\"},{\"tweet\":\"11\"},{\"tweet\":\"12\"},{\"tweet\":\"13\"},{\"tweet\":\"14\"},{\"tweet\":\"15\"},{\"tweet\":\"16\"},{\"tweet\":\"17\"}]"
-    val request = httpApp.run(Request(method = Method.GET, uri = uri"/tweets/popular" ))
+    val request = httpApp().run(Request(method = Method.GET, uri = uri"/tweets/popular" ))
     assertTrue(check(request.getOrElse(Response(NotFound)), Status.Ok, Some(expectedTweets)))
