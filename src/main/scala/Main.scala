@@ -12,8 +12,8 @@ import org.http4s.{EntityEncoder, HttpApp, HttpRoutes}
 object Main extends IOApp {
 
   def run(args: List[String]): IO[ExitCode] =
-    val helloWorldService = SimpleHttpRoutes.helloWorldRoutes[IO](HelloWorld.impl[IO])
-    val tweetService =  SimpleHttpRoutes.tweetRoutes[IO](Tweet.impl[IO])
+    val helloWorldService = SimpleHttpRoutes.helloWorldRoutes[IO]
+    val tweetService =  SimpleHttpRoutes.tweetRoutes[IO]
     val services = tweetService <+> helloWorldService
     val httpApp = Router("/" -> helloWorldService, "/api" -> services).orNotFound
 

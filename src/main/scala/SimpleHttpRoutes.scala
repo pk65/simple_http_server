@@ -5,7 +5,8 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.dsl.io.{GET, Root}
 
 object SimpleHttpRoutes {
-  def helloWorldRoutes[F[_]: Sync](H: HelloWorld[F]): HttpRoutes[F] = {
+  def helloWorldRoutes[F[_]: Sync]: HttpRoutes[F] = {
+    val H = HelloWorld.impl[F]
     val dsl = new Http4sDsl[F]{}
     import dsl.*
     HttpRoutes.of[F] {
@@ -17,7 +18,8 @@ object SimpleHttpRoutes {
     }
   }
 
-  def tweetRoutes[F[_]: Sync](T: Tweet[F]): HttpRoutes[F] = {
+  def tweetRoutes[F[_]: Sync]: HttpRoutes[F] = {
+    val T = Tweet.impl[F]
     val dsl = new Http4sDsl[F]{}
     import dsl.*
     HttpRoutes.of[F] {
