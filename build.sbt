@@ -1,3 +1,5 @@
+import sbt.Keys.testFrameworks
+
 val scala3Version = "3.1.0"
 val http4sVersion = "0.23.7"
 val LogbackVersion = "1.2.10"
@@ -14,13 +16,13 @@ lazy val root = project
 
     scalacOptions ++= {
       Seq(
-        //        "-encoding", "UTF-8",
+        // "-encoding", "UTF-8",
         "-feature",
         "-language:implicitConversions",
-        //        "-Ylog-classpath",
+        // "-Ylog-classpath",
         "-new-syntax",
         "-explain", "explain-types",
-        //        "-rewrite",
+        // "-rewrite",
         "-source:future-migration",
         "-Xfatal-warnings",
         "-Yexplicit-nulls",
@@ -39,6 +41,8 @@ lazy val root = project
       "co.fs2"          %% "fs2-core" % "3.2.4" classifier "javadoc",
       "org.typelevel" %% "cats-effect" % "3.3.0" classifier "javadoc",
       "io.circe"        %% "circe-generic"       % CirceVersion classifier "javadoc",
-      "org.typelevel"   %% "munit-cats-effect-3" % MunitCatsEffectVersion % Test,
-    )
+      "org.typelevel"   %% "munit-cats-effect-3" % MunitCatsEffectVersion % Test
+    ),
+
+    testFrameworks += new TestFramework("munit.Framework")
   )
